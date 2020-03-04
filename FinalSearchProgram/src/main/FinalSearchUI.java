@@ -12,25 +12,108 @@ import BreezySwing.*;
 
 public class FinalSearchUI extends GBFrame {
 
-	JMenuItem addEmployee = addMenuItem("new","Employee");
-	JMenuItem addStudent = addMenuItem("new","Student");
-	JMenuItem addWidget = addMenuItem("new","Widget");
+	JMenuItem displayEmployee = addMenuItem("Display","Employees");
+	JMenuItem displayStudent = addMenuItem("Display","Students");
+	JMenuItem displayWidget = addMenuItem("Display","Widgets");
+	JMenuItem populate = addMenuItem("Display","populate");
 	
 	JPanel dataLayout = addPanel(1,2,1,1);
 	JTable dataTable = null;
 	DefaultTableModel dataModel = null;
+	
+	String[] columnNames = new String[2];
+	
 	ArrayList<Object> list = new ArrayList<>();
 	
+	public FinalSearchUI(){
+		display();
+	}
+	
+	public ArrayList<Object> getStudents() {
+		ArrayList<Object> students = new ArrayList<>();
+		for(Object s:list) {
+			if(s.getClass().equals(Student.class)) {
+				students.add((Student)s);
+			}
+		}
+		int size=students.size();
+		for(int i=1;i<size-1;i++) {
+			int min=i;
+			for(int j=i+1;j<size;j++) {
+				if(((Student)(students.get(j))).getGpa()<(((Student)(students.get(min))).getGpa())) {
+					min=j;
+				}
+			}
+			if(min!=i) {
+				Object temp=students.get(min);
+				students.set(min, students.get(i));
+				students.set(i, temp);
+			}
+		}
+		return students;
+	}
+	
+	public ArrayList<Object> getEmployees() {
+		ArrayList<Object> employees = new ArrayList<>();
+		for(Object s:list) {
+			if(s.getClass().equals(Employee.class)) {
+				employees.add((Employee)s);
+			}
+		}
+		int size=employees.size();
+		for(int i=1;i<size-1;i++) {
+			int min=i;
+			for(int j=i+1;j<size;j++) {
+				if(((Employee)(employees.get(j))).getSalary()<(((Employee)(employees.get(min))).getSalary())) {
+					min=j;
+				}
+			}
+			if(min!=i) {
+				Object temp=employees.get(min);
+				employees.set(min, employees.get(i));
+				employees.set(i, temp);
+			}
+		}
+		return employees;
+	}
+	
+	public ArrayList<Object> getWidgets() {
+		ArrayList<Object> widgets = new ArrayList<>();
+		for(Object s:list) {
+			if(s.getClass().equals(Student.class)) {
+				widgets.add((Widget)s);
+			}
+		}
+		return widgets;
+	}
+	
 	public void menuItemSelected(JMenuItem m) {
-		if(m==addEmployee) {
-			display("Name","Salary");
-			list.add(new Employee("Matt",12300));
-			displayObjects(list);
+		if(m==populate) {
+			list.add(new Employee("Matt",1200));
+			list.add(new Employee("Noah",1500));
+			list.add(new Employee("Mike",1400));
+			list.add(new Student("Jonathan",3.5));
+			list.add(new Student("Nate",4.6));
+			list.add(new Student("Robby",3.7));
+		}
+		if(m==displayEmployee) {
+			columnNames[0]="Names";
+			columnNames[1]="Salary";
+			dataModel.setColumnCount(0);
+			dataModel.setColumnIdentifiers(columnNames);
+			displayObjects(getEmployees());
+		}
+		if(m==displayStudent) {
+			columnNames[0]="Names";
+			columnNames[1]="GPA";
+			dataModel.setColumnCount(0);
+			dataModel.setColumnIdentifiers(columnNames);
+			displayObjects(getStudents());
 		}
 	}
 	
-	private void display(String title1, String title2) {
-		String[] columnNames = {title1, title2};
+	private void display() {
+		String[] columnNames = {"1", "2"};
 		String[][] StudentData = {{"",""}};
 
 		// Set the layout mode of the data panel
@@ -66,11 +149,11 @@ public class FinalSearchUI extends GBFrame {
 		String[] dataRow = new String[2];
 		if(obj.getClass().equals(Student.class)) {
 			dataRow[0] = ((Student)(obj)).getName();
-			dataRow[1] = String.format("%f", ((Student)(obj)).getGpa());
+			dataRow[1] = String.format("%.2f", ((Student)(obj)).getGpa());
 		}
 		if(obj.getClass().equals(Employee.class)) {
 			dataRow[0] = ((Employee)(obj)).getName();
-			dataRow[1] = String.format("%f", ((Employee)(obj)).getSalary());
+			dataRow[1] = String.format("%.2f", ((Employee)(obj)).getSalary());
 		}
 		if(obj.getClass().equals(Widget.class)) {
 			dataRow[0] = String.format("%d", ((Widget)(obj)).getProductNum());
