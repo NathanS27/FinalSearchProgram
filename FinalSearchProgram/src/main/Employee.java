@@ -1,6 +1,6 @@
 package main;
 
-public class Employee {
+public class Employee implements Comparable  {
 
 	private String name;
 	private double salary;
@@ -24,5 +24,16 @@ public class Employee {
 
 	public void setSalary(double salary) {
 		this.salary = salary;
+	}
+	public int compareTo(Object obj) {
+		if(((Employee)(obj)).getSalary()<(this.getSalary())){
+			return -1;
+		}
+		if(((Employee)(obj)).getSalary()>(this.getSalary())){
+			return 1;
+		}
+		else{
+			return 0;
+		}
 	}
 }

@@ -1,6 +1,6 @@
 package main;
 
-public class Widget {
+public class Widget implements Comparable {
 
 	private int productNum;
 	private int numSold;
@@ -24,5 +24,17 @@ public class Widget {
 
 	public void setNumSold(int numSold) {
 		this.numSold = numSold;
+	}
+	
+	public int compareTo(Object obj) {
+		if(((Widget)(obj)).getNumSold()<(this.getNumSold())){
+			return -1;
+		}
+		if(((Widget)(obj)).getNumSold()<(this.getNumSold())){
+			return 1;
+		}
+		else{
+			return 0;
+		}
 	}
 }

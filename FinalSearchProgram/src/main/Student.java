@@ -1,6 +1,6 @@
 package main;
 
-public class Student {
+public class Student implements Comparable {
 
 	private String name;
 	private double gpa;
@@ -24,5 +24,9 @@ public class Student {
 
 	public void setGpa(double gpa) {
 		this.gpa = gpa;
+	}
+	
+	public int compareTo(Object obj) {
+		return ((Student)(obj)).getName().compareTo(this.getName());
 	}
 }

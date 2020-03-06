@@ -3,6 +3,7 @@ package main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -23,97 +24,90 @@ public class FinalSearchUI extends GBFrame {
 	
 	String[] columnNames = new String[2];
 	
-	ArrayList<Object> list = new ArrayList<>();
+	ArrayList<Comparable> list = new ArrayList<>();
+	
+	SortSearch sorter=new SortSearch();
 	
 	public FinalSearchUI(){
 		display();
+		dataLayout.setBackground(Color.black);
+		dataTable.setGridColor(new Color(232, 72, 60));
 	}
 	
-	public ArrayList<Object> getStudents() {
-		ArrayList<Object> students = new ArrayList<>();
-		for(Object s:list) {
+	public ArrayList<Comparable> getStudents() {
+		ArrayList<Comparable> students = new ArrayList<>();
+		for(Comparable s:list) {
 			if(s.getClass().equals(Student.class)) {
 				students.add((Student)s);
 			}
 		}
-		int size=students.size();
-		for(int i=1;i<size-1;i++) {
-			int min=i;
-			for(int j=i+1;j<size;j++) {
-				if(((Student)(students.get(j))).getGpa()<(((Student)(students.get(min))).getGpa())) {
-					min=j;
-				}
-			}
-			if(min!=i) {
-				Object temp=students.get(min);
-				students.set(min, students.get(i));
-				students.set(i, temp);
-			}
-		}
-		return students;
+		return sorter.selectionSort(students, students.size());
 	}
 	
-	public ArrayList<Object> getEmployees() {
-		ArrayList<Object> employees = new ArrayList<>();
-		for(Object s:list) {
+	
+	
+	public ArrayList<Comparable> getEmployees() {
+		ArrayList<Comparable> employees = new ArrayList<>();
+		for(Comparable s:list) {
 			if(s.getClass().equals(Employee.class)) {
 				employees.add((Employee)s);
 			}
 		}
-		int size=employees.size();
-		for(int i=1;i<size-1;i++) {
-			int min=i;
-			for(int j=i+1;j<size;j++) {
-				if(((Employee)(employees.get(j))).getSalary()<(((Employee)(employees.get(min))).getSalary())) {
-					min=j;
-				}
-			}
-			if(min!=i) {
-				Object temp=employees.get(min);
-				employees.set(min, employees.get(i));
-				employees.set(i, temp);
-			}
-		}
-		return employees;
+		return sorter.selectionSort(employees, employees.size());
 	}
 	
-	public ArrayList<Object> getWidgets() {
-		ArrayList<Object> widgets = new ArrayList<>();
-		for(Object s:list) {
-			if(s.getClass().equals(Student.class)) {
+	public ArrayList<Comparable> getWidgets() {
+		ArrayList<Comparable> widgets = new ArrayList<>();
+		for(Comparable s:list) {
+			if(s.getClass().equals(Widget.class)) {
 				widgets.add((Widget)s);
 			}
 		}
-		return widgets;
+		return sorter.selectionSort(widgets, widgets.size());
 	}
 	
 	public void menuItemSelected(JMenuItem m) {
 		if(m==populate) {
 			list.add(new Employee("Matt",1200));
 			list.add(new Employee("Noah",1500));
+			list.add(new Employee("Terrian",3));
 			list.add(new Employee("Mike",1400));
 			list.add(new Student("Jonathan",3.5));
 			list.add(new Student("Nate",4.6));
+			list.add(new Student("Nate",4));
 			list.add(new Student("Robby",3.7));
+			int i=0;
+			Random rand = new Random();
+			while(i<8) {
+				list.add(new Widget(rand.nextInt(999),rand.nextInt(9999)));
+				i++;
+			}
 		}
 		if(m==displayEmployee) {
 			columnNames[0]="Names";
 			columnNames[1]="Salary";
 			dataModel.setColumnCount(0);
 			dataModel.setColumnIdentifiers(columnNames);
-			displayObjects(getEmployees());
+			displayComparables(getEmployees());
 		}
 		if(m==displayStudent) {
 			columnNames[0]="Names";
 			columnNames[1]="GPA";
 			dataModel.setColumnCount(0);
 			dataModel.setColumnIdentifiers(columnNames);
-			displayObjects(getStudents());
+			displayComparables(getStudents());
+		}
+		if(m==displayWidget) {
+			columnNames[0]="Product Num";
+			columnNames[1]="Number Sold";
+			dataModel.setColumnCount(0);
+			dataModel.setColumnIdentifiers(columnNames);
+			displayComparables(getWidgets());
 		}
 	}
 	
 	private void display() {
-		String[] columnNames = {"1", "2"};
+		String[] columnNames = {"", ""};
 		String[][] StudentData = {{"",""}};
 
 		// Set the layout mode of the data panel
@@ -138,14 +132,14 @@ public class FinalSearchUI extends GBFrame {
 		dataTable.disable();
 	}
 
-	private void displayObjects(ArrayList<Object> list) {
+	private void displayComparables(ArrayList<Comparable> list) {
 		dataModel.setRowCount(0);
-		for(Object obj:list) {
-			displayObject(obj);
+		for(Comparable obj:list) {
+			displayComparable(obj);
 		}
 	}
 	
-	private void displayObject(Object obj) {
+	private void displayComparable(Comparable obj) {
 		String[] dataRow = new String[2];
 		if(obj.getClass().equals(Student.class)) {
 			dataRow[0] = ((Student)(obj)).getName();
