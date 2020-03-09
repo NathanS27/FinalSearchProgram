@@ -5,8 +5,14 @@ public class Widget implements Comparable {
 	private int productNum;
 	private int numSold;
 	
-	public Widget(int num, int sold) {
-		productNum=num;
+	public Widget(String num, int sold) throws FormatException {
+		if(num.toCharArray().length!=3) {
+			throw new FormatException("Product ID must be 3 numbers");
+		}
+		if(sold<0) {
+			throw new FormatException("Number Sold cannot be negative");
+		}
+		productNum=Integer.parseInt(num);
 		numSold=sold;
 	}
 
@@ -28,10 +34,10 @@ public class Widget implements Comparable {
 	
 	public int compareTo(Object obj) {
 		if(((Widget)(obj)).getNumSold()<(this.getNumSold())){
-			return -1;
+			return 1;
 		}
 		if(((Widget)(obj)).getNumSold()<(this.getNumSold())){
-			return 1;
+			return -1;
 		}
 		else{
 			return 0;

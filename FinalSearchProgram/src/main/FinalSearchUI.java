@@ -13,14 +13,22 @@ import BreezySwing.*;
 
 public class FinalSearchUI extends GBFrame {
 
+	JMenuItem addEmployee = addMenuItem("Add","Employee");
+	JMenuItem addStudent = addMenuItem("Add","Student");
+	JMenuItem addWidget = addMenuItem("Add","Widget");
+	JMenuItem populate = addMenuItem("Add","Populate");
+	
 	JMenuItem displayEmployee = addMenuItem("Display","Employees");
 	JMenuItem displayStudent = addMenuItem("Display","Students");
 	JMenuItem displayWidget = addMenuItem("Display","Widgets");
-	JMenuItem populate = addMenuItem("Display","populate");
 	
-	JPanel dataLayout = addPanel(1,2,1,1);
+	JPanel dataLayout = addPanel(1,1,2,1);
 	JTable dataTable = null;
 	DefaultTableModel dataModel = null;
+	
+	JButton insertionSort = addButton("Insertion Sort",2,1,1,1);
+	JButton selectionSort = addButton("Selection Sort",2,2,1,1);
+	private char currentDisplay;
 	
 	String[] columnNames = new String[2];
 	
@@ -32,6 +40,7 @@ public class FinalSearchUI extends GBFrame {
 		display();
 		dataLayout.setBackground(Color.black);
 		dataTable.setGridColor(new Color(232, 72, 60));
+		populate.setBackground(new Color(232, 72, 60));;
 	}
 	
 	public ArrayList<Comparable> getStudents() {
@@ -41,10 +50,8 @@ public class FinalSearchUI extends GBFrame {
 				students.add((Student)s);
 			}
 		}
-		return sorter.selectionSort(students, students.size());
+		return students;
 	}
-	
-	
 	
 	public ArrayList<Comparable> getEmployees() {
 		ArrayList<Comparable> employees = new ArrayList<>();
@@ -53,7 +60,7 @@ public class FinalSearchUI extends GBFrame {
 				employees.add((Employee)s);
 			}
 		}
-		return sorter.selectionSort(employees, employees.size());
+		return employees;
 	}
 	
 	public ArrayList<Comparable> getWidgets() {
@@ -63,31 +70,38 @@ public class FinalSearchUI extends GBFrame {
 				widgets.add((Widget)s);
 			}
 		}
-		return sorter.selectionSort(widgets, widgets.size());
+		return widgets;
 	}
 	
 	public void menuItemSelected(JMenuItem m) {
 		if(m==populate) {
+			try {
 			list.add(new Employee("Matt",1200));
 			list.add(new Employee("Noah",1500));
 			list.add(new Employee("Terrian",3));
 			list.add(new Employee("Mike",1400));
-			list.add(new Student("Jonathan",3.5));
 			list.add(new Student("Nate",4.6));
+			list.add(new Student("Jonathan",3.5));
 			list.add(new Student("Nate",4));
 			list.add(new Student("Robby",3.7));
 			int i=0;
 			Random rand = new Random();
 			while(i<8) {
-				list.add(new Widget(rand.nextInt(999),rand.nextInt(9999)));
+				list.add(new Widget(String.format("%d", rand.nextInt(999)),rand.nextInt(9999)));
 				i++;
 			}
+			}
+			catch(FormatException e) {
+				messageBox(e.getMessage());
+			}
+			populate.setVisible(false);
 		}
 		if(m==displayEmployee) {
 			columnNames[0]="Names";
 			columnNames[1]="Salary";
 			dataModel.setColumnCount(0);
 			dataModel.setColumnIdentifiers(columnNames);
+			currentDisplay='E';
 			displayComparables(getEmployees());
 		}
 		if(m==displayStudent) {
@@ -95,6 +109,7 @@ public class FinalSearchUI extends GBFrame {
 			columnNames[1]="GPA";
 			dataModel.setColumnCount(0);
 			dataModel.setColumnIdentifiers(columnNames);
+			currentDisplay='S';
 			displayComparables(getStudents());
 		}
 		if(m==displayWidget) {
@@ -102,7 +117,42 @@ public class FinalSearchUI extends GBFrame {
 			columnNames[1]="Number Sold";
 			dataModel.setColumnCount(0);
 			dataModel.setColumnIdentifiers(columnNames);
+			currentDisplay='W';
 			displayComparables(getWidgets());
+		}
+		if(m==addStudent) {
+			AddDlg dlg = new AddDlg(this,1,list);
+		}
+		if(m==addEmployee) {
+			AddDlg dlg = new AddDlg(this,0,list);
+		}
+		if(m==addWidget) {
+			AddDlg dlg = new AddDlg(this,9,list);
+		}
+	}
+	
+	public void buttonClicked(JButton b) {
+		if(b==insertionSort) {
+			if(currentDisplay=='E') {
+				displayComparables(sorter.insertionSort(getEmployees(), getEmployees().size()));
+			}
+			if(currentDisplay=='S') {
+				displayComparables(sorter.insertionSort(getStudents(), getStudents().size()));
+			}
+			if(currentDisplay=='W') {
+				displayComparables(sorter.insertionSort(getWidgets(), getWidgets().size()));
+			}
+		}
+		if(b==selectionSort) {
+			if(currentDisplay=='E') {
+				displayComparables(sorter.selectionSort(getEmployees(), getEmployees().size()));
+			}
+			if(currentDisplay=='S') {
+				displayComparables(sorter.selectionSort(getStudents(), getStudents().size()));
+			}
+			if(currentDisplay=='W') {
+				displayComparables(sorter.selectionSort(getWidgets(), getWidgets().size()));
+			}
 		}
 	}
 	

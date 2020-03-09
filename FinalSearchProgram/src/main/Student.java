@@ -5,7 +5,13 @@ public class Student implements Comparable {
 	private String name;
 	private double gpa;
 	
-	public Student(String nm, double grade) {
+	public Student(String nm, double grade) throws FormatException {
+		if(nm.isEmpty()) {
+			throw new FormatException("Please Enter a Name");
+		}
+		if(grade<0) {
+			throw new FormatException("GPA must be greater than 0");
+		}
 		name=nm;
 		gpa=grade;
 	}

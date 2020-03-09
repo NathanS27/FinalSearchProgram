@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class SortSearch {
 
 	public ArrayList<Comparable> selectionSort(ArrayList<Comparable> a,int size){
-		for(int i=1;i<size-1;i++) {
+		for(int i=0;i<size-1;i++) {
 			int max=i;
 			for(int j=i+1;j<size;j++) {
-				if(a.get(j).compareTo(a.get(max))>0) {
+				if(a.get(j).compareTo(a.get(max))<=0) {
 					max=j;
 				}
 			}

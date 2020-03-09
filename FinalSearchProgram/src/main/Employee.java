@@ -5,7 +5,13 @@ public class Employee implements Comparable  {
 	private String name;
 	private double salary;
 	
-	public Employee(String nm, double pay) {
+	public Employee(String nm, double pay) throws FormatException {
+		if(nm.isEmpty()) {
+			throw new FormatException("Please Enter a Name");
+		}
+		if(pay<0) {
+			throw new FormatException("Pay cannot be negative");
+		}
 		name=nm;
 		salary=pay;
 	}
