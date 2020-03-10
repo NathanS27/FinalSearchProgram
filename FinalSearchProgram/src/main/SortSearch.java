@@ -47,6 +47,7 @@ public class SortSearch {
 		ArrayList<Comparable> searchResults = new ArrayList<>();
 			switch(cd) {
 			case 'E':
+				//test
 				searchThis=selectionSort(getEmployees(), getEmployees().size());
 				for(int i=0;i<searchThis.size();i++) {
 					try {
