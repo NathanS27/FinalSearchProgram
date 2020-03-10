@@ -22,55 +22,33 @@ public class FinalSearchUI extends GBFrame {
 	JMenuItem displayStudent = addMenuItem("Display","Students");
 	JMenuItem displayWidget = addMenuItem("Display","Widgets");
 	
-	JPanel dataLayout = addPanel(1,1,2,1);
+	JPanel dataLayout = addPanel(1,1,3,1);
 	JTable dataTable = null;
 	DefaultTableModel dataModel = null;
 	
 	JButton insertionSort = addButton("Insertion Sort",2,1,1,1);
-	JButton selectionSort = addButton("Selection Sort",2,2,1,1);
+	JButton selectionSort = addButton("Selection Sort",2,3,1,1);
+	
+	JButton binarySearch = addButton("Binary Search",3,1,1,1);
+	JButton linearSearch = addButton("Linear Search",3,3,1,1);
+	
+	JLabel searchLbl = addLabel("Search:",4,1,1,1);
+	JTextField search = addTextField("",4,2,2,1);
+	
 	private char currentDisplay;
 	
 	String[] columnNames = new String[2];
 	
 	ArrayList<Comparable> list = new ArrayList<>();
 	
-	SortSearch sorter=new SortSearch();
+	SortSearch sorter=new SortSearch(list);
 	
 	public FinalSearchUI(){
 		display();
 		dataLayout.setBackground(Color.black);
 		dataTable.setGridColor(new Color(232, 72, 60));
-		populate.setBackground(new Color(232, 72, 60));;
-	}
-	
-	public ArrayList<Comparable> getStudents() {
-		ArrayList<Comparable> students = new ArrayList<>();
-		for(Comparable s:list) {
-			if(s.getClass().equals(Student.class)) {
-				students.add((Student)s);
-			}
-		}
-		return students;
-	}
-	
-	public ArrayList<Comparable> getEmployees() {
-		ArrayList<Comparable> employees = new ArrayList<>();
-		for(Comparable s:list) {
-			if(s.getClass().equals(Employee.class)) {
-				employees.add((Employee)s);
-			}
-		}
-		return employees;
-	}
-	
-	public ArrayList<Comparable> getWidgets() {
-		ArrayList<Comparable> widgets = new ArrayList<>();
-		for(Comparable s:list) {
-			if(s.getClass().equals(Widget.class)) {
-				widgets.add((Widget)s);
-			}
-		}
-		return widgets;
+		populate.setBackground(new Color(232, 72, 60));
+		searchDisplay(false);
 	}
 	
 	public void menuItemSelected(JMenuItem m) {
@@ -102,7 +80,7 @@ public class FinalSearchUI extends GBFrame {
 			dataModel.setColumnCount(0);
 			dataModel.setColumnIdentifiers(columnNames);
 			currentDisplay='E';
-			displayComparables(getEmployees());
+			displayComparables(sorter.getEmployees());
 		}
 		if(m==displayStudent) {
 			columnNames[0]="Names";
@@ -110,7 +88,7 @@ public class FinalSearchUI extends GBFrame {
 			dataModel.setColumnCount(0);
 			dataModel.setColumnIdentifiers(columnNames);
 			currentDisplay='S';
-			displayComparables(getStudents());
+			displayComparables(sorter.getStudents());
 		}
 		if(m==displayWidget) {
 			columnNames[0]="Product Num";
@@ -118,7 +96,7 @@ public class FinalSearchUI extends GBFrame {
 			dataModel.setColumnCount(0);
 			dataModel.setColumnIdentifiers(columnNames);
 			currentDisplay='W';
-			displayComparables(getWidgets());
+			displayComparables(sorter.getWidgets());
 		}
 		if(m==addStudent) {
 			AddDlg dlg = new AddDlg(this,1,list);
@@ -134,26 +112,35 @@ public class FinalSearchUI extends GBFrame {
 	public void buttonClicked(JButton b) {
 		if(b==insertionSort) {
 			if(currentDisplay=='E') {
-				displayComparables(sorter.insertionSort(getEmployees(), getEmployees().size()));
+				displayComparables(sorter.insertionSort(sorter.getEmployees(), sorter.getEmployees().size()));
 			}
 			if(currentDisplay=='S') {
-				displayComparables(sorter.insertionSort(getStudents(), getStudents().size()));
+				displayComparables(sorter.insertionSort(sorter.getStudents(), sorter.getStudents().size()));
 			}
 			if(currentDisplay=='W') {
-				displayComparables(sorter.insertionSort(getWidgets(), getWidgets().size()));
+				displayComparables(sorter.insertionSort(sorter.getWidgets(), sorter.getWidgets().size()));
 			}
 		}
 		if(b==selectionSort) {
 			if(currentDisplay=='E') {
-				displayComparables(sorter.selectionSort(getEmployees(), getEmployees().size()));
+				displayComparables(sorter.selectionSort(sorter.getEmployees(), sorter.getEmployees().size()));
 			}
 			if(currentDisplay=='S') {
-				displayComparables(sorter.selectionSort(getStudents(), getStudents().size()));
+				displayComparables(sorter.selectionSort(sorter.getStudents(), sorter.getStudents().size()));
 			}
 			if(currentDisplay=='W') {
-				displayComparables(sorter.selectionSort(getWidgets(), getWidgets().size()));
+				displayComparables(sorter.selectionSort(sorter.getWidgets(), sorter.getWidgets().size()));
 			}
 		}
+		if(b==linearSearch) {
+			System.out.println("SEARCH KEYWORD: " + search.getText());
+			displayComparables(sorter.linearSearch(search.getText(),currentDisplay));
+		}
+	}
+	
+	private void searchDisplay(Boolean b) {
+		searchLbl.setVisible(b);
+		search.setVisible(b);
 	}
 	
 	private void display() {
@@ -183,6 +170,7 @@ public class FinalSearchUI extends GBFrame {
 	}
 
 	private void displayComparables(ArrayList<Comparable> list) {
+		searchDisplay(true);
 		dataModel.setRowCount(0);
 		for(Comparable obj:list) {
 			displayComparable(obj);
