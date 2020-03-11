@@ -33,6 +33,14 @@ public class Student implements Comparable {
 	}
 	
 	public int compareTo(Object obj) {
-		return ((Student)(obj)).getName().compareTo(this.getName());
+		if(((Student)(obj)).getName().compareTo(this.getName())<0){
+			return 1;
+		}
+		if(((Student)(obj)).getName().compareTo(this.getName())>0){
+			return -1;
+		}
+		else{
+			return 0;
+		}
 	}
 }

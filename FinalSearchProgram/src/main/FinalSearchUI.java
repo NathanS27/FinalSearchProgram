@@ -62,15 +62,15 @@ public class FinalSearchUI extends GBFrame {
 			list.add(new Student("Jonathan",3.5));
 			list.add(new Student("Nate",4));
 			list.add(new Student("Robby",3.7));
+			list.add(new Student("Noah",3.7));
 			int i=0;
 			Random rand = new Random();
-			while(i<8) {
+			while(i<3) {
 				list.add(new Widget(String.format("%d", rand.nextInt(999)),rand.nextInt(9999)));
 				i++;
 			}
 			}
 			catch(FormatException e) {
-				messageBox(e.getMessage());
 			}
 			populate.setVisible(false);
 		}
@@ -133,14 +133,38 @@ public class FinalSearchUI extends GBFrame {
 			}
 		}
 		if(b==linearSearch) {
-			System.out.println("SEARCH KEYWORD: " + search.getText());
 			displayComparables(sorter.linearSearch(search.getText(),currentDisplay));
+		}
+		if(b==binarySearch) {
+			Comparable searchTemp;
+			try {
+				switch(currentDisplay) {
+				case 'E':
+					searchTemp=new Employee("TEMP",Integer.parseInt(search.getText()));
+					displayComparables(sorter.binarySearch(sorter.getEmployees(),searchTemp));
+					break;
+				case 'S':
+					searchTemp=new Student(search.getText(),0.00);
+					displayComparables(sorter.binarySearch(sorter.getStudents(),searchTemp));
+					break;
+				case 'W':
+					searchTemp=new Widget(String.format("%d", 111),Integer.parseInt(search.getText()));
+					displayComparables(sorter.binarySearch(sorter.getWidgets(),searchTemp));
+					break;
+				}
+			}
+			catch(FormatException e) {
+				messageBox(e.getMessage());
+			}
+			
 		}
 	}
 	
 	private void searchDisplay(Boolean b) {
 		searchLbl.setVisible(b);
 		search.setVisible(b);
+		binarySearch.setVisible(b);
+		linearSearch.setVisible(b);
 	}
 	
 	private void display() {
