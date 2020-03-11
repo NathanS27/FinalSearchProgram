@@ -36,7 +36,7 @@ public class Widget implements Comparable {
 		if(((Widget)(obj)).getNumSold()<(this.getNumSold())){
 			return 1;
 		}
-		if(((Widget)(obj)).getNumSold()<(this.getNumSold())){
+		if(((Widget)(obj)).getNumSold()>(this.getNumSold())){
 			return -1;
 		}
 		else{

@@ -58,17 +58,19 @@ public class FinalSearchUI extends GBFrame {
 			list.add(new Employee("Noah",1500));
 			list.add(new Employee("Terrian",3));
 			list.add(new Employee("Mike",1400));
+			list.add(new Employee("Jonathan",1400));
+			list.add(new Employee("Adam",1400));
 			list.add(new Student("Nate",4.6));
 			list.add(new Student("Jonathan",3.5));
+			list.add(new Student("Liam",3.5));
 			list.add(new Student("Nate",4));
 			list.add(new Student("Robby",3.7));
 			list.add(new Student("Noah",3.7));
-			int i=0;
-			Random rand = new Random();
-			while(i<3) {
-				list.add(new Widget(String.format("%d", rand.nextInt(999)),rand.nextInt(9999)));
-				i++;
-			}
+			list.add(new Widget("123",4321));
+			list.add(new Widget("523",2345));
+			list.add(new Widget("431",3463));
+			list.add(new Widget("869",9876));
+			list.add(new Widget("274",6789));
 			}
 			catch(FormatException e) {
 			}
@@ -141,21 +143,25 @@ public class FinalSearchUI extends GBFrame {
 				switch(currentDisplay) {
 				case 'E':
 					searchTemp=new Employee("TEMP",Integer.parseInt(search.getText()));
-					displayComparables(sorter.binarySearch(sorter.getEmployees(),searchTemp));
+					displayComparables(sorter.binarySearch(sorter.getEmployees(),searchTemp,currentDisplay));
 					break;
 				case 'S':
 					searchTemp=new Student(search.getText(),0.00);
-					displayComparables(sorter.binarySearch(sorter.getStudents(),searchTemp));
+					displayComparables(sorter.binarySearch(sorter.getStudents(),searchTemp,currentDisplay));
 					break;
 				case 'W':
 					searchTemp=new Widget(String.format("%d", 111),Integer.parseInt(search.getText()));
-					displayComparables(sorter.binarySearch(sorter.getWidgets(),searchTemp));
+					displayComparables(sorter.binarySearch(sorter.getWidgets(),searchTemp,currentDisplay));
 					break;
 				}
 			}
 			catch(FormatException e) {
 				messageBox(e.getMessage());
 			}
+			catch(NumberFormatException f) {
+				messageBox("Enter proper search key");
+			}
+			
 			
 		}
 	}
@@ -165,6 +171,8 @@ public class FinalSearchUI extends GBFrame {
 		search.setVisible(b);
 		binarySearch.setVisible(b);
 		linearSearch.setVisible(b);
+		selectionSort.setVisible(b);
+		insertionSort.setVisible(b);
 	}
 	
 	private void display() {
@@ -221,7 +229,7 @@ public class FinalSearchUI extends GBFrame {
 	
 	public static void main(String[] args) {
 		JFrame frm = new FinalSearchUI();
-		frm.setSize(500,300);
+		frm.setSize(500,320);
 		frm.setTitle("Final Search");
 		frm.getContentPane().setBackground(new Color(232, 72, 60));
 		frm.setResizable(true);

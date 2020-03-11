@@ -42,55 +42,76 @@ public class SortSearch {
 		  return a;
 	}
 	
-	public ArrayList<Comparable> binarySearch(ArrayList<Comparable> list, Comparable item){
-		ArrayList<Comparable> results = new ArrayList<Comparable>();
-			int first = 0;
-			int last = list.size();
-			int n = list.size()/2;
-			int temp;
-			System.out.println("First: "+first);
-			System.out.println("n: "+n);
-			System.out.println("Last: "+last);
-			while(first <= last) {
-				if(list.get(n).compareTo(item) < 0) {
-					//right half
-					first = n + 1;
-					System.out.println("First: "+first);
-					System.out.println("n: "+n);
-					System.out.println("Last: "+last);
-					System.out.println("Right");
+	public ArrayList<Comparable> binarySearch(ArrayList<Comparable> arr, Comparable item,char c) throws FormatException{
+		ArrayList<Comparable> result = new ArrayList<>();
+		ArrayList<Comparable> searchArr = new ArrayList<>(selectionSort(arr,arr.size()));
+		int start = 0;
+		int end = searchArr.size()-1;
+		int mid = (end-start)/2;
+		switch(c) {
+		case 'E':
+			while(start <= end) {
+				if(((Employee)(searchArr.get(mid))).compareTo(item) < 0) {
+					start = mid + 1;
 				}
-				else if (list.get(n).compareTo(item) > 0) {
-					//left half
-					last = n - 1;
-					System.out.println("First: "+first);
-					System.out.println("n: "+n);
-					System.out.println("Last: "+last);
-					System.out.println("Left ");
+				else if(((Employee)(searchArr.get(mid))).compareTo(item) > 0) {
+					end = mid - 1;
 				}
 				else {
-					//equals
-					results.add(list.get(n));
-					System.out.println("added: "+list.get(n).toString());
-					temp=n;
-					while(n<list.size()-1&&list.get(n).compareTo(item)==0) {
-						results.add(list.get(n));
-						n++;
-					}
-					n=temp-1;
-					while(n>0 && list.get(n).compareTo(item)==0) {
-						results.add(list.get(n));
-						n--;
-					}
-					break;
+					result.add(searchArr.get(mid));
+					searchArr.remove(mid);
+					start = 0;
+					end = searchArr.size()-1;
+					mid = (start+end)/2;
+					continue;
 				}
-				n = (first + last)/2;
-				System.out.println("First: "+first);
-				System.out.println("n: "+n);
-				System.out.println("Last: "+last);
-			System.out.println("NOT FOUND");
+				mid = (start+end)/2;
 			}
-		return results;
+			break;
+		case 'S':
+			while(start <= end) {
+				if(((Student)(searchArr.get(mid))).compareTo(item) < 0) {
+					start = mid + 1;
+				}
+				else if(((Student)(searchArr.get(mid))).compareTo(item) > 0) {
+					end = mid - 1;
+				}
+				else {
+					result.add(searchArr.get(mid));
+					searchArr.remove(mid);
+					start = 0;
+					end = searchArr.size()-1;
+					mid = (start+end)/2;
+					continue;
+				}
+				mid = (start+end)/2;
+			}
+			break;
+		case 'W':
+			while(start <= end) {
+				if(((Widget)(searchArr.get(mid))).compareTo(item) < 0) {
+					start = mid + 1;
+				}
+				else if(((Widget)(searchArr.get(mid))).compareTo(item) > 0) {
+					end = mid - 1;
+				}
+				else {
+					result.add(searchArr.get(mid));
+					searchArr.remove(mid);
+					start = 0;
+					end = searchArr.size()-1;
+					mid = (start+end)/2;
+					continue;
+				}
+				mid = (start+end)/2;
+			}
+			break;
+		}
+		
+		if(result.size()>0) {
+			return result;
+		}
+		throw new FormatException("Search unsuccessful.");
 	}
 
 	public ArrayList<Comparable> linearSearch(String key, char cd){
@@ -134,8 +155,27 @@ public class SortSearch {
 					
 				}
 				return searchResults;
+				
 			case 'W':
-				selectionSort(getWidgets(), getWidgets().size());
+				searchThis=selectionSort(getWidgets(), getWidgets().size());
+				for(int i=0;i<searchThis.size();i++) {
+					try {
+						switch(((Widget)(searchThis.get(i))).compareTo(new Widget("111",Integer.parseInt(key)))) {
+						case -1:
+							//if name comes later in the array
+							break;
+						case 0:
+							searchResults.add(searchThis.get(i));
+						case 1:
+							//if searching past where name should be,not found
+							break;
+						}
+					}
+					catch(FormatException e) {
+						
+					}
+					
+				}
 				return searchResults;
 			}
 		return null;
