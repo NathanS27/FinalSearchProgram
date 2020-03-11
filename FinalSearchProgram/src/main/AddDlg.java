@@ -9,19 +9,19 @@ public class AddDlg extends GBDialog {
 	JButton exit = addButton("Cancel", 5,1,1,1);
 	JButton add = addButton("Add", 5,2,1,1);
 	
-	JLabel nameLbl = addLabel("Name:", 1,1,1,1);
+	JLabel nameLbl = addLabel("<html><font color='white'>Name:</font></html>", 1,1,1,1);
 	JTextField name = addTextField("", 1,2,1,1);
-	JLabel salaryLbl = addLabel("Salary:", 2,1,1,1);
+	JLabel salaryLbl = addLabel("<html><font color='white'>Salary:</font></html>", 2,1,1,1);
 	DoubleField salary = addDoubleField(0, 2,2,1,1);
 	
-	JLabel nameLbl1 = addLabel("Name:", 1,1,1,1);
+	JLabel nameLbl1 = addLabel("<html><font color='white'>Name:</font></html>", 1,1,1,1);
 	JTextField name1 = addTextField("", 1,2,1,1);
-	JLabel gpaLbl = addLabel("GPA:", 2,1,1,1);
+	JLabel gpaLbl = addLabel("<html><font color='white'>GPA:</font></html>", 2,1,1,1);
 	DoubleField gpa = addDoubleField(0, 2,2,1,1);
 	
-	JLabel prodLbl = addLabel("Product Number:", 1,1,1,1);
+	JLabel prodLbl = addLabel("<html><font color='white'>Product Number:</font></html>", 1,1,1,1);
 	IntegerField prodNum = addIntegerField(0, 1,2,1,1);
-	JLabel soldLbl = addLabel("Number Sold:", 2,1,1,1);
+	JLabel soldLbl = addLabel("<html><font color='white'>Number Sold:</font></html>", 2,1,1,1);
 	IntegerField soldNum = addIntegerField(0, 2,2,1,1);
 	
 	int id;
@@ -69,7 +69,7 @@ public class AddDlg extends GBDialog {
 		id = i;
 		list = li;
 		setLocationRelativeTo(null);
-		setSize(400, 250);
+		setSize(300, 100);
 		setVisible(true);
 		setLocationRelativeTo(null);
 	}

@@ -71,6 +71,7 @@ public class FinalSearchUI extends GBFrame {
 			list.add(new Widget("431",3463));
 			list.add(new Widget("869",9876));
 			list.add(new Widget("274",6789));
+			list.add(new Widget("987",6789));
 			}
 			catch(FormatException e) {
 			}
